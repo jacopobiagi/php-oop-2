@@ -1,6 +1,8 @@
 <?php
 include('object.php');
 
+
+    // classe iniziale
     class AnimalProduct{
         public $tipoProdotto;
         public $prezzoBase;
@@ -11,9 +13,16 @@ include('object.php');
         }
     }
 
+    //inclusione trait
+    trait animalPrice{
+        public $prezzo;
+    }
+
+
+    //estensione gatto
     class CatProduct extends AnimalProduct{
 
-        public $prezzo;
+       use animalPrice;
    
         public function setProd($price) {
             switch ($this->tipoProdotto){
@@ -36,9 +45,11 @@ include('object.php');
         }
     
     }
+
+    //estensione cane
     class DogProduct extends AnimalProduct{
 
-        public $prezzo;
+        use animalPrice;
    
         public function setProd($price) {
             switch ($this->tipoProdotto){
@@ -82,7 +93,7 @@ include('object.php');
                         if ($prodotto['categoria'] === 'cane') {
                             $prodottoCane = new DogProduct($prodotto['tipologia'], $prodotto['prezzo']);
 
-                            // Controllo se $prodotto['prezzo'] è un intero
+                            // Controllo se $prodotto['prezzo'] è un float
                             if (!is_float($prodotto['prezzo'])) {
                                 throw new InvalidArgumentException('Il prezzo deve essere un numero.');
                             }
@@ -138,22 +149,6 @@ include('object.php');
                 }
                 
             ?>
-            <!-- <div class="card">
-                <div class="img-cont">
-                    <img src="https://img.freepik.com/free-photo/abstract-colorful-splash-3d-background-generative-ai-background_60438-2509.jpg?w=1060&t=st=1707153474~exp=1707154074~hmac=552b3042412e3fe7b63c7383cdf3bf46198cd750462ae407a73d5936b54cbe0e" alt="">
-                </div>
-                <div class="description">
-                    <h3>
-                        Osso per cani
-                    </h3>
-                    <p>
-                        5.00€
-                    </p>
-                    <p>
-                        materiale:plastica
-                    </p>
-                </div>
-            </div> -->
         </div>
     </div>
 </body>
