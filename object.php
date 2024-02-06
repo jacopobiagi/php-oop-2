@@ -59,7 +59,7 @@ $prodotti = array(
     ),
     array(
         'tipologia' => 'giochi',
-        'prezzo' => 13.99,
+        'prezzo' => 13.00,
         'materiale' => 'gomma',
         'nome_prodotto' => 'Pallina rimbalzante',
         'url_immagine' => 'https://www.puckator.it/media/catalog/product/cache/bfaa860a2e72362f89db6f7b8e23a6df/T/Y/TY542_001_1599588939.jpg',

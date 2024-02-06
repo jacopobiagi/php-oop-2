@@ -18,17 +18,21 @@ include('object.php');
         public function setProd($price) {
             switch ($this->tipoProdotto){
                 case 'giochi':
-                    $this -> prezzo = $this->prezzoBase + 2 + $price;
+                    $this -> prezzo = $this->prezzoBase + 2.00 + $price;
                     break;
                 
                 case 'cibo':
-                    $this -> prezzo = $prezzoBase + 4 + $price;
+                    $this -> prezzo = $this->prezzoBase + 4.00 + $price;
                     break;
                 
                 case 'cucce':
-                    $this -> prezzo = $prezzoBase + 5 + $price;
+                    $this -> prezzo = $this->prezzoBase + 5.00 + $price;
                     break;
             }
+        }
+
+        public function getProd(){
+            return $this->prezzo;
         }
     
     }
@@ -74,50 +78,63 @@ include('object.php');
             <?php
 
                 foreach($prodotti as $prodotto){
+                    try {
+                        if ($prodotto['categoria'] === 'cane') {
+                            $prodottoCane = new DogProduct($prodotto['tipologia'], $prodotto['prezzo']);
 
-                    if ($prodotto['categoria'] === 'cane') {
-                        $prodottoCane = new DogProduct($prodotto['tipologia'], $prodotto['prezzo']);
-                        $prodottoCane-> setProd(1);
-                    
-                        echo ' <div class="card">
-                                    <div class="img-cont">
-                                        <img src="'.$prodotto['url_immagine'].'" alt="">
-                                    </div>
-                                    <div class="description">
-                                        <h3>
-                                            '.$prodotto['nome_prodotto'].'
-                                        </h3>
-                                        <p>
-                                            '.$prodottoCane->getProd().'
-                                        </p>
-                                        <p>
-                                            '.$prodotto['materiale'].'
-                                        </p>
-                                    </div>
-                                </div>';
-                    }else{
-                        $prodottoGatto = new DogProduct($prodotto['tipologia'], $prodotto['prezzo']);
-                        $prodottoGatto-> setProd(1);
-                    
-                        echo ' <div class="card">
-                                    <div class="img-cont">
-                                        <img src="'.$prodotto['url_immagine'].'" alt="">
-                                    </div>
-                                    <div class="description">
-                                        <h3>
-                                            '.$prodotto['nome_prodotto'].'
-                                        </h3>
-                                        <p>
-                                            '.$prodottoGatto->getProd().'
-                                        </p>
-                                        <p>
-                                            '.$prodotto['materiale'].'
-                                        </p>
-                                    </div>
-                                </div>';
+                            // Controllo se $prodotto['prezzo'] è un intero
+                            if (!is_float($prodotto['prezzo'])) {
+                                throw new InvalidArgumentException('Il prezzo deve essere un numero.');
+                            }
+
+                            $prodottoCane->setProd(1);
+                        
+                            echo ' <div class="card">
+                                        <div class="img-cont">
+                                            <img src="'.$prodotto['url_immagine'].'" alt="">
+                                        </div>
+                                        <div class="description">
+                                            <h3>
+                                                '.$prodotto['nome_prodotto'].'
+                                            </h3>
+                                            <p>
+                                                '.$prodottoCane->getProd().'
+                                            </p>
+                                            <p>
+                                                '.$prodotto['materiale'].'
+                                            </p>
+                                        </div>
+                                    </div>';
+                        } else {
+                            $prodottoGatto = new CatProduct($prodotto['tipologia'], $prodotto['prezzo']);
+
+                            // Controllo se $prodotto['prezzo'] è un float
+                            if (!is_float($prodotto['prezzo'])) {
+                                throw new InvalidArgumentException('Il prezzo deve essere un numero.');
+                            }
+
+                            $prodottoGatto->setProd(1);
+                        
+                            echo ' <div class="card">
+                                        <div class="img-cont">
+                                            <img src="'.$prodotto['url_immagine'].'" alt="">
+                                        </div>
+                                        <div class="description">
+                                            <h3>
+                                                '.$prodotto['nome_prodotto'].'
+                                            </h3>
+                                            <p>
+                                                '.$prodottoGatto->getProd().'
+                                            </p>
+                                            <p>
+                                                '.$prodotto['materiale'].'
+                                            </p>
+                                        </div>
+                                    </div>';
+                        }
+                    } catch (InvalidArgumentException $e) {
+                        echo 'Errore: ' . $e->getMessage();
                     }
-                    
-                    
                 }
                 
             ?>
